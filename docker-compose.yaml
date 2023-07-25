@@ -1,0 +1,17 @@
+version: '3'
+services:
+  service_one:
+    image: 'hello-world'
+  service_two:
+    image: 'ubuntu:18.04'
+  service_httpd:
+    image: 'httpd'
+    ports:
+      - "80-90:80"
+      #      - "80:80"
+    volumes:
+      - "/mnt/wars:/usr/local/apache2/htdocs"
+  service_tomcat:
+    image: 'tomcat:9'
+  
+

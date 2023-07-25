@@ -15,5 +15,11 @@ RUN service apache-2 restart
 COPY /mnt/index.html /var/www/html
 EXPOSE 80
 RUN echo "localhost" >> /etc/apache2/apache2.conf9
-ENTRYPOINT ["/usr/sbin/apache2ctl","-D","FOREGROUND"]
+ENTRYPOINT ["/usr/sbin/apache2ctl","-D","FOREGROUND]
+
+FROM nginx:alpine
+ARG DOCKER_HOST
+COPY ./nginx.conf /etc/nginx/nginx.conf
+RUN sed -i "s/localhost/${DOCKER_HOST}/g" /etc/nginx/nginx.conf
+EXPOSE 80
 

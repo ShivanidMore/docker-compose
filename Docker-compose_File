@@ -1,0 +1,60 @@
+Docker Compose Installation Step From Browser
+ 
+1.   DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+2.   DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+3.   curl -SL https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+4.   chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+5.   docker compose version
+       ->  Docker Compose version v2.20.2
+       
+Docker-compose Installation step from Notebook (Successful)
+
+sudo su -
+systemctl start docker
+docker ps
+sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
+	  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+		                         Dload  Upload   Total   Spent    Left  Speed
+	  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+	100 10.3M  100 10.3M    0     0  32.4M      0 --:--:-- --:--:-- --:--:-- 32.4M
+sudo chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose -v
+	docker-compose version 1.21.0, build 5920eb0
+
+vi docker-compose.yaml
+version: '3'
+services:
+  service_one:
+    image: 'hello-world'
+  service_two:
+    image: 'ubuntu:18.04'
+  service_httpd:
+    image: 'httpd'
+    ports:
+      - "80-90:80"
+      #      - "80:80"
+    volumes:
+      - "/mnt/wars:/usr/local/apache2/htdocs"
+  service_tomcat:
+    image: 'tomcat:9'
+
+
+docker-compose up
+docker-compose up service_one
+docker-compose up -d
+docker-compose ps service_httpd
+docker-compose down
+docker-compose down service_tomcat  -> never be run bcz down not work on specific service
+docker-compose stop service_tomcat  -> it stop the tomcat service
+docker-compose down and docker-compose stop difference
+  -> stop => only stop the container, its name, mount point never be deleted. container stop
+  -> down => down the container, its name, mount point all are deleted. container remove
+docker-compose exec service_tomcat bash  -> move into tomcat container
+docker-compose up -d --scale service_httpd=3   -> service httpd up for 3 time
+docker-compose up -d --scale service_httpd=2 --scale service_one=2  -> with different scale point
+Port and Port Range
+docker-compose up -d   -> for single port in docker-compose.yaml file
+docker-compose up -d --scale service_httpd=3  -> for port range (port under container same, but Ec2 port change as random by given range) 
+
+
