@@ -23,3 +23,4 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 RUN sed -i "s/localhost/${DOCKER_HOST}/g" /etc/nginx/nginx.conf
 EXPOSE 80
 
+# Multiple form are allowed
